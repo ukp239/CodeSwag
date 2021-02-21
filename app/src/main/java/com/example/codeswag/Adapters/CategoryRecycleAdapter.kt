@@ -12,9 +12,9 @@ import com.example.codeswag.R
 import kotlinx.android.synthetic.main.category_list_items.view.*
 import com.example.codeswag.R.layout.category_list_items as category_list_items1
 
-class CategoryRecycleAdapter (val context: Context, val categories : List<Category>) : RecyclerView.Adapter<CategoryRecycleAdapter.Holder>() {
+class CategoryRecycleAdapter (val context: Context, val categories : List<Category>, val itemClick: (Category) -> Unit) : RecyclerView.Adapter<CategoryRecycleAdapter.Holder>() {
 
-    inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) { // inner class since class within class
+    inner class Holder(itemView: View, val itemClick: (Category) -> Unit) : RecyclerView.ViewHolder(itemView) { // inner class since class within class
         // in list view, we had to create our own holder class but here we can get extension from Recylerview.viewholder class (pre build)
         val categoryImage =  itemView?.findViewById<ImageView>(R.id.categoryImage)
         val categoryName = itemView?.findViewById<TextView>(R.id.categoryName)
@@ -23,12 +23,13 @@ class CategoryRecycleAdapter (val context: Context, val categories : List<Catego
             val resourceId = context.resources.getIdentifier(category.image, "drawable", context.packageName)
             categoryImage?.setImageResource(resourceId)
             categoryName?.text = category.title
+            itemView.setOnClickListener { itemClick(category) }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val view = LayoutInflater.from(context).inflate(R.layout.category_list_items, parent, false)
-        return Holder(view)
+        return Holder(view, itemClick)
     } // when new view holders are needed; similar to inflating the xml view for the first time
 
     override fun getItemCount(): Int {
