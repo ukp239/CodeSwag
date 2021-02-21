@@ -22,22 +22,37 @@ class CategoryAdapter(context: Context, categories : List<Category>) : BaseAdapt
     //Alt enter on base adapter to implement these 4 methods
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val categoryView : View
-        categoryView = LayoutInflater.from(context).inflate(R.layout.category_list_items, null)
+        val holder: ViewHolder // creating a holder var of type viewHolder class
+
+        if (convertView == null){ // that is if it is running for the first time
+            categoryView = LayoutInflater.from(context).inflate(R.layout.category_list_items, null)
+            holder = ViewHolder()
+
+            holder.categoryImage = categoryView.findViewById(R.id.categoryImage)
+            holder.categoryName = categoryView.findViewById(R.id.categoryName)
+            println("I exist for the first time")
+            categoryView.tag = holder
+        } else {
+            holder = convertView.tag as ViewHolder
+            categoryView = convertView
+            println("Go green, recycle")
+        }
+
+        //categoryView = LayoutInflater.from(context).inflate(R.layout.category_list_items, null)
         //Layout inflater takes a layout and creates a view out of this
         //Now we need to create UI items based on the ids that are found inside these list items that are categoryName and categoryImage
 
-        val categoryImage : ImageView = categoryView.findViewById(R.id.categoryImage)
-        val categoryName : TextView = categoryView.findViewById(R.id.categoryName)
+        //val categoryImage : ImageView = categoryView.findViewById(R.id.categoryImage)
+        //val categoryName : TextView = categoryView.findViewById(R.id.categoryName)
 
         val category = categories[position]
 
         // We have image names but we need the resource Ids
 
         val resourceId = context.resources.getIdentifier(category.image, "drawable", context.packageName)
-        categoryImage.setImageResource(resourceId)
+        holder.categoryImage?.setImageResource(resourceId)
 
-        println(resourceId)
-        categoryName.text = category.title
+        holder.categoryName?.text = category.title
 
         return categoryView
     }
@@ -54,5 +69,9 @@ class CategoryAdapter(context: Context, categories : List<Category>) : BaseAdapt
         return categories.count()
     }  // how many items are there in the list view
 
+    private class ViewHolder {
+        var categoryImage: ImageView? = null
+        var categoryName: TextView?= null
 
+    }
 }
