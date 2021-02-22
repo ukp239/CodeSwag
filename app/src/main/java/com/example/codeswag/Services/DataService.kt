@@ -28,6 +28,10 @@ object DataService {
         Product("Devslopes Graphic Ginnie", "$18", "hat1"),
         Product("Devslopes Hat Black", "$20", "hat2"),
         Product("Devslopes Hat White", "$18", "hat3"),
+        Product("Devslopes Hat Snapback", "$22", "hat4"),
+        Product("Devslopes Graphic Ginnie", "$18", "hat1"),
+        Product("Devslopes Hat Black", "$20", "hat2"),
+        Product("Devslopes Hat White", "$18", "hat3"),
         Product("Devslopes Hat Snapback", "$22", "hat4")
     )
 
@@ -51,7 +55,7 @@ object DataService {
 
     val digitalGoods = listOf<Product>()
 
-    fun getProducts(category: String) : List<Product>{
+    fun getProducts(category: String?) : List<Product>{
 
         return when(category){
             "SHIRTS" -> shirts

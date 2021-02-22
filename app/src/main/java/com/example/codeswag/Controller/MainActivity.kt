@@ -27,7 +27,8 @@ class MainActivity : AppCompatActivity() {
         adapter = CategoryRecycleAdapter(this, DataService.category){category -> //lambda
             val productIntent = Intent(this, ProductActivity::class.java)
             productIntent.putExtra(EXTRA_CATEGORY, category.title)
-            //println(category.title)
+            startActivity(productIntent)
+
         }
 
         categoryListView.adapter = adapter //setting the adapter for the list view from activity_main to the adapter created
