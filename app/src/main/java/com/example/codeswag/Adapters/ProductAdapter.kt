@@ -7,13 +7,18 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.codeswag.Model.Category
 import com.example.codeswag.Model.Product
 import com.example.codeswag.R
 import kotlinx.android.synthetic.main.product_list_item.view.*
 
-class ProductAdapter(val context: Context, val products : List<Product>) : RecyclerView.Adapter<ProductAdapter.ProductHolder>() {
+class ProductAdapter(
+    val context: Context,
+    val products: List<Product>,
+    val itemClick1: (Product) -> Unit
+) : RecyclerView.Adapter<ProductAdapter.ProductHolder>() {
 
-    inner class ProductHolder(itemView: View?) : RecyclerView.ViewHolder(itemView!!){
+    inner class ProductHolder(itemView: View?, itemClick1: (Product) -> Unit) : RecyclerView.ViewHolder(itemView!!){
         // we need product image, cost and name
 
         val productImage = itemView?.findViewById<ImageView>(R.id.productImage)
@@ -25,6 +30,7 @@ class ProductAdapter(val context: Context, val products : List<Product>) : Recyc
             productImage?.setImageResource(resourceId)
             productName?.text = product.title
             productPrice?.text = product.price
+            itemView.setOnClickListener { itemClick1(product) }
         }
 
 
@@ -32,7 +38,7 @@ class ProductAdapter(val context: Context, val products : List<Product>) : Recyc
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.product_list_item, parent, false)
-        return ProductHolder(view)
+        return ProductHolder(view, itemClick1)
     }
 
     override fun getItemCount(): Int {

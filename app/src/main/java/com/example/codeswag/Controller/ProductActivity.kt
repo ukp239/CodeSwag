@@ -1,14 +1,16 @@
 package com.example.codeswag.Controller
 
+import android.content.Intent
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.GridView
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.codeswag.Adapters.ProductAdapter
+import com.example.codeswag.Model.Item
 import com.example.codeswag.R
 import com.example.codeswag.Services.DataService
 import com.example.codeswag.Utilities.EXTRA_CATEGORY
+import com.example.codeswag.Utilities.EXTRA_ITEM
 import kotlinx.android.synthetic.main.activity_product.*
 
 class ProductActivity : AppCompatActivity() {
@@ -20,9 +22,23 @@ class ProductActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_product)
 
+        val item = Item(null, "")
+
         val categoryType = intent.getStringExtra(EXTRA_CATEGORY)
 
-        adapter = ProductAdapter(this, DataService.getProducts(categoryType))
+        val productType = DataService.getProducts(categoryType) //list of hats or hoodies etc
+
+
+
+
+        adapter = ProductAdapter(this, productType){productType ->
+            val itemIntent = Intent(this, ItemActivity::class.java)
+            itemIntent.putExtra(EXTRA_ITEM, productType)
+            startActivity(itemIntent)
+
+        }
+
+
 
 
         // When orientation is landscape we will want spancount to be 3, when it is potrait we want it to be 2
